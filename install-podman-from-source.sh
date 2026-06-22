@@ -62,7 +62,7 @@ mark_step_done() {
   [ "$DRY_RUN" -eq 1 ] && return
   [ -z "${STATE_DIR:-}" ] && return
   mkdir -p "$STATE_DIR"
-  : > "${STATE_DIR}/${name}.done"
+  : >"${STATE_DIR}/${name}.done"
 }
 
 #######################################
@@ -94,53 +94,53 @@ EOF
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
-    --dry-run|-n)
-      DRY_RUN=1
-      shift
-      ;;
-    --yes|-y|--non-interactive)
-      NONINTERACTIVE=1
-      shift
-      ;;
-    --podman-version=*)
-      PODMAN_VERSION="${1#*=}"
-      shift
-      ;;
-    --go-version=*)
-      GO_VERSION="${1#*=}"
-      shift
-      ;;
-    --no-cache|--force)
-      RESET_STATE=1
-      shift
-      ;;
-    --clean-workdir)
-      CLEAN_WORKDIR=1
-      shift
-      ;;
-    --cleanup-after)
-      CLEAN_AFTER=1
-      shift
-      ;;
-    --cleanup-only)
-      CLEAN_ONLY=1
-      shift
-      ;;
-    --keep-go)
-      KEEP_GO=1
-      shift
-      ;;
-    --keep-rust)
-      KEEP_RUST=1
-      shift
-      ;;
-    -h|--help)
-      usage
-      exit 0
-      ;;
-    *)
-      die "Unknown argument: $1"
-      ;;
+  --dry-run | -n)
+    DRY_RUN=1
+    shift
+    ;;
+  --yes | -y | --non-interactive)
+    NONINTERACTIVE=1
+    shift
+    ;;
+  --podman-version=*)
+    PODMAN_VERSION="${1#*=}"
+    shift
+    ;;
+  --go-version=*)
+    GO_VERSION="${1#*=}"
+    shift
+    ;;
+  --no-cache | --force)
+    RESET_STATE=1
+    shift
+    ;;
+  --clean-workdir)
+    CLEAN_WORKDIR=1
+    shift
+    ;;
+  --cleanup-after)
+    CLEAN_AFTER=1
+    shift
+    ;;
+  --cleanup-only)
+    CLEAN_ONLY=1
+    shift
+    ;;
+  --keep-go)
+    KEEP_GO=1
+    shift
+    ;;
+  --keep-rust)
+    KEEP_RUST=1
+    shift
+    ;;
+  -h | --help)
+    usage
+    exit 0
+    ;;
+  *)
+    die "Unknown argument: $1"
+    ;;
   esac
 done
 
@@ -198,15 +198,18 @@ Force (no cache): ${RESET_STATE}
 Clean workdir:   ${CLEAN_WORKDIR}
 EOF
 
+if [ ! -t 0 ]; then
+  NONINTERACTIVE=1
+fi
+
 if [ "$NONINTERACTIVE" -ne 1 ]; then
   read -r -p "Proceed with these actions? [y/N] " ans
   case "$ans" in
-    y|Y|yes|YES)
-      ;;
-    *)
-      log "Aborted by user."
-      exit 1
-      ;;
+  y | Y | yes | YES) ;;
+  *)
+    log "Aborted by user."
+    exit 1
+    ;;
   esac
 fi
 
@@ -288,7 +291,7 @@ cleanup_build_env() {
 clone_or_update_repo() {
   local url="$1"
   local dest="$2"
-  local ref="${3:-}"  # optional branch/tag for shallow clone
+  local ref="${3:-}" # optional branch/tag for shallow clone
 
   if [ "$DRY_RUN" -eq 1 ]; then
     if [ -d "$dest/.git" ]; then

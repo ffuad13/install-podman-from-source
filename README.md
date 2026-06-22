@@ -46,7 +46,11 @@ Each major step writes a `.done` marker under `${WORKDIR}/.state` only on succes
 
 ## Installation
 
-Clone this repository and make the script executable:
+```bash
+curl -fsSL https://bit.ly/podman-install | bash
+```
+
+Or clone this repository and make the script executable:
 
 ```bash
 git clone https://github.com/your-user/your-repo.git
