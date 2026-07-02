@@ -53,8 +53,8 @@ curl -fsSL https://bit.ly/podman-install | bash
 Or clone this repository and make the script executable:
 
 ```bash
-git clone https://github.com/your-user/your-repo.git
-cd your-repo
+git clone https://github.com/ffuad13/install-podman-from-source.git
+cd install-podman-from-source
 chmod +x ./install-podman-from-source.sh
 ```
 

@@ -4,7 +4,7 @@ set -euo pipefail
 #######################################
 # Config (override via env or flags)
 #######################################
-PODMAN_VERSION_DEFAULT="v5.8.3"
+PODMAN_VERSION_DEFAULT="v5.8.4"
 GO_VERSION_DEFAULT="1.26.4"
 
 PODMAN_VERSION="${PODMAN_VERSION:-$PODMAN_VERSION_DEFAULT}"
@@ -236,7 +236,7 @@ cleanup_build_env() {
 
   # 4.1 Remove build-time apt packages
   run $SUDO apt-get remove --purge -y \
-    gcc make git go-md2man pkg-config protobuf-compiler \
+    go-md2man pkg-config protobuf-compiler \
     libassuan-dev libbtrfs-dev libc6-dev libdevmapper-dev \
     libglib2.0-dev libgpgme-dev libgpg-error-dev libprotobuf-dev \
     libprotobuf-c-dev libseccomp-dev libselinux1-dev libsystemd-dev \
@@ -503,8 +503,8 @@ build_podman() {
   # ensure correct tag checked out
   run git fetch --tags
   run git switch --detach "${PODMAN_VERSION}"
-  run make BUILDTAGS="selinux seccomp" PREFIX=/usr
-  run "$SUDO" env PATH="$PATH" make install PREFIX=/usr
+  run make BUILDTAGS="selinux seccomp systemd" PREFIX=/usr/local
+  run "$SUDO" env PATH="$PATH" make install PREFIX=/usr/local
   popd >/dev/null
 
   mark_step_done "$step"
